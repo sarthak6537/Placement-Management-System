@@ -1,125 +1,174 @@
-# PlacePro — Campus Placement Management System
+# PlacePro – Campus Placement Management System
 
-## What You Need (Install Once)
+A full-stack web application designed to manage campus placement activities, student profiles, job opportunities, applications, and placement-related information.
 
-| Tool | Version | Download |
-|------|---------|----------|
-| Java JDK | 21 | https://adoptium.net (Eclipse Temurin 21) |
-| Node.js | 18+ | https://nodejs.org |
-| PostgreSQL | 14+ | https://www.postgresql.org/download |
+## Tech Stack
 
----
+**Backend**
+- Java 21
+- Spring Boot 4.1.0
+- Spring Security
+- Spring Data JPA / Hibernate
+- JWT Authentication
+- Maven
 
-## Step 1 — PostgreSQL Setup (Do this once on every new system)
+**Frontend**
+- React 18
+- Vite
+- React Router
+- Bootstrap 5
+- Bootstrap Icons
 
-Open **pgAdmin** or **SQL Shell (psql)** and run:
+**Database**
+- PostgreSQL
+
+## Features and Modules
+
+- Student management and student profiles
+- Job posting management
+- Job application management
+- Company and college management
+- Interview schedule management
+- Skills and certificates management
+- Authentication and role-based access control
+
+The application includes Student, Admin, and Placement Officer roles.
+
+## Project Structure
+
+```text
+PlacementManagement/
+├── src/
+│   └── main/
+│       ├── java/             # Spring Boot backend
+│       └── resources/        # Application configuration
+├── frontend/                 # React frontend
+├── pom.xml                   # Maven configuration
+├── mvnw                      # Maven wrapper
+├── mvnw.cmd                  # Maven wrapper for Windows
+├── docker-compose.yml        # Docker configuration
+├── Dockerfile
+└── README.md
+```
+
+## Prerequisites
+
+Install the following:
+
+- Java JDK 21
+- Node.js
+- PostgreSQL 14 or later
+- Git
+
+## Installation and Setup
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/sarthak6537/Placement-Management-System.git
+cd Placement-Management-System
+```
+
+### 2. Create PostgreSQL Database
+
+Open pgAdmin or PostgreSQL SQL Shell and execute:
 
 ```sql
 CREATE DATABASE placementdb;
 ```
 
-That's it. Username: `postgres`, Password: `root` (defaults already set in the app).
+### 3. Configure Environment Variables
 
-If your PostgreSQL password is different, edit this file:
-```
-PlacementManagement/src/main/resources/application.properties
-```
-Change line:
-```
-spring.datasource.password=${DB_PASSWORD:root}
-```
-Replace `root` with your actual PostgreSQL password.
+The backend reads database credentials and the JWT secret from environment variables.
 
----
+For Windows PowerShell, configure them in the backend terminal:
 
-## Step 2 — Start the Backend
+```powershell
+$env:SPRING_DATASOURCE_URL="jdbc:postgresql://localhost:5432/placementdb"
+$env:DB_USERNAME="postgres"
+$env:DB_PASSWORD="your_postgresql_password"
+$env:JWT_SECRET="your_long_random_secret"
+```
 
-Open a terminal in the `PlacementManagement` folder and run:
+Replace the example values with your own credentials.
+
+Do not commit actual credentials or secrets to GitHub.
+
+### 4. Start the Backend
+
+From the project root directory, run:
 
 **Windows:**
-```
-mvnw.cmd spring-boot:run
+
+```powershell
+.\mvnw.cmd spring-boot:run
 ```
 
-**Mac / Linux:**
-```
+**Mac/Linux:**
+
+```bash
 chmod +x mvnw
 ./mvnw spring-boot:run
 ```
 
-Wait until you see:
-```
-Started PlacementManagementApplication in X seconds
-```
+Backend URL:
 
-Backend is now running at **http://localhost:8080**
+http://localhost:8080
 
----
+### 5. Start the Frontend
 
-## Step 3 — Start the Frontend
+Open a second terminal:
 
-Open a **second terminal** in the `PlacementManagement/frontend` folder and run:
-
-```
+```bash
+cd frontend
 npm install
 npm run dev
 ```
 
-Frontend is now running at **http://localhost:3000**
+Frontend URL:
 
----
+http://localhost:3000
 
-## Step 4 — Open in Browser
+### 6. Access the Application
 
-Go to: **http://localhost:3000**
+Open your browser and visit:
 
-Register a new account and start using the system.
+http://localhost:3000
 
----
+Register an account to get started.
 
-## Default Credentials (if you want to use existing data)
+## API and Architecture
 
-| Username | Password | Role |
-|----------|----------|------|
-| Register yourself | — | Student / Placement Officer / Admin |
+The backend uses a layered Spring Boot architecture:
 
----
+- Controller layer – Handles HTTP requests.
+- Service layer – Contains business logic.
+- Repository layer – Handles database operations.
+- Entity layer – Represents database entities.
 
-## Folder Structure
-
-```
-PlacementManagement/
-├── src/                  ← Spring Boot backend (Java 21)
-├── frontend/             ← React frontend (Vite + Bootstrap)
-├── pom.xml               ← Maven build file
-├── mvnw / mvnw.cmd       ← Maven wrapper (no Maven install needed)
-└── application.properties← DB config
-```
-
----
+The frontend communicates with backend REST endpoints through Vite's development proxy.
 
 ## Troubleshooting
 
-**"Port 8080 already in use"**
-→ Another app is using port 8080. Stop it or change the port in `application.properties`:
-```
-server.port=8081
-```
-And update `frontend/vite.config.js` proxy target to `http://localhost:8081`
+**Database connection error**
+- Ensure PostgreSQL is running.
+- Verify the database name and environment variables.
 
-**"Could not connect to database"**
-→ Make sure PostgreSQL is running and the `placementdb` database exists.
+**Port 8080 already in use**
+- Stop the other application or configure another backend port.
 
-**"JAVA_HOME not set" or wrong Java version**
-→ Install Java 21 from https://adoptium.net and set JAVA_HOME to the JDK 21 path.
+**Frontend dependencies issue**
+- Run `npm install` inside the frontend directory.
 
-**Frontend shows blank page**
-→ Make sure `npm install` was run inside the `frontend/` folder.
+**Java version issue**
+- Verify that Java 21 is installed using `java -version`.
+
+## Author
+
+**Sarthak Mahamuni**
+
+GitHub: https://github.com/sarthak6537
 
 ---
 
-## Tech Stack
-
-- **Backend:** Spring Boot 4.1 · Spring Security · JWT · JPA · PostgreSQL
-- **Frontend:** React 18 · Vite · Bootstrap 5 · React Router 7
-- **Auth:** JWT (stored in localStorage, 24h expiry)
+This project was developed as a Java Full Stack development project using Spring Boot, React, and PostgreSQL.
