@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Placements</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+<div class="container">
+    <h1>Placements</h1>
+    <a th:href="@{/ui}">Back</a> | <a th:href="@{/ui/placements/new}">Add Placement</a>
+    <div>
+        <input id="searchInput" placeholder="Search..." />
+        <div id="pager" class="pager"></div>
+    </div>
+    <table id="placementsTable">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Company</th>
+            <th>Date</th>
+            <th>Students</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="p : ${placements}">
+            <td th:text="${p.id}">1</td>
+            <td th:text="${p.companyName}">Company</td>
+            <td th:text="${p.date}">2026-01-01</td>
+            <td>
+                <span th:each="s : ${p.students}" th:text="${s.firstName + ' ' + s.lastName + ( (p.students.contains(s)) ? ', ' : '')}"></span>
+            </td>
+            <td>
+                <a th:href="@{'/ui/placements/' + ${p.id} + '/edit'}">Edit</a> |
+                <a th:href="@{'/ui/placements/' + ${p.id} + '/delete'}" onclick="return confirm('Delete this placement?');">Delete</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <script th:src="@{/js/list-utils.js}"></script>
+    <script th:src="@{/js/modal.js}"></script>
+    <script>
+        simpleSearchFilter('placementsTable','searchInput');
+        simplePagination('placementsTable', 10, 'pager');
+        document.querySelectorAll('a[href*="/delete"]').forEach(function(a){
+            a.addEventListener('click', function(e){
+                e.preventDefault(); confirmDelete(a.href, 'Delete this placement?');
+            });
+        });
+    </script>
+</div>
+</body>
+</html>

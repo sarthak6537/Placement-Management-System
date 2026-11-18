@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Certificates</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+<div class="container">
+    <h1>Certificates</h1>
+    <a th:href="@{/ui}">Back</a> | <a th:href="@{/ui/certificates/new}">Add Certificate</a>
+    <div>
+        <input id="searchInput" placeholder="Search..." />
+        <div id="pager" class="pager"></div>
+    </div>
+    <table id="certificatesTable">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Issued Date</th>
+            <th>Student</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="c : ${certificates}">
+            <td th:text="${c.id}">1</td>
+            <td th:text="${c.name}">Cert</td>
+            <td th:text="${c.issuedDate}">2026-01-01</td>
+            <td th:text="${c.student != null} ? ${c.student.firstName + ' ' + c.student.lastName} : ''">Student</td>
+            <td>
+                <a th:href="@{'/ui/certificates/' + ${c.id} + '/edit'}">Edit</a> |
+                <a th:href="@{'/ui/certificates/' + ${c.id} + '/delete'}" onclick="return confirm('Delete this certificate?');">Delete</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <script th:src="@{/js/list-utils.js}"></script>
+    <script th:src="@{/js/modal.js}"></script>
+    <script>
+        simpleSearchFilter('certificatesTable','searchInput');
+        simplePagination('certificatesTable', 10, 'pager');
+        document.querySelectorAll('a[href*="/delete"]').forEach(function(a){
+            a.addEventListener('click', function(e){
+                e.preventDefault(); confirmDelete(a.href, 'Delete this certificate?');
+            });
+        });
+    </script>
+</div>
+</body>
+</html>

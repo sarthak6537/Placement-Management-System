@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Certificate Form</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+<div class="container">
+    <h1>Certificate</h1>
+    <form th:action="@{/ui/certificates}" th:object="${certificate}" method="post">
+        <input type="hidden" th:field="*{id}" />
+        <div>
+            <label>Name</label>
+            <input type="text" th:field="*{name}" />
+            <div class="error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+        </div>
+        <div>
+            <label>Issued Date</label>
+            <input type="date" th:field="*{issuedDate}" />
+            <div class="error" th:if="${#fields.hasErrors('issuedDate')}" th:errors="*{issuedDate}"></div>
+        </div>
+        <div>
+            <label>Student</label>
+            <select name="studentId" th:field="*{student.id}">
+                <option value="" th:text="'-- None --'">-- None --</option>
+                <option th:each="s : ${students}" th:value="${s.id}" th:text="${s.firstName + ' ' + s.lastName}" th:selected="${certificate.student != null} ? ${s.id == certificate.student.id} : false"></option>
+            </select>
+        </div>
+        <div>
+            <button type="submit">Save</button>
+            <a th:href="@{/ui/certificates}">Cancel</a>
+        </div>
+    </form>
+</div>
+</body>
+</html>

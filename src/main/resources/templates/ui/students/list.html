@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Students</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+<div class="container">
+    <h1>Students</h1>
+    <a th:href="@{/ui}">Back</a> | <a th:href="@{/ui/students/new}">Add Student</a>
+    <div>
+        <input id="searchInput" placeholder="Search..." />
+        <div id="pager" class="pager"></div>
+    </div>
+    <table id="studentsTable">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Email</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="s : ${students}">
+            <td th:text="${s.id}">1</td>
+            <td th:text="${s.firstName}">First</td>
+            <td th:text="${s.lastName}">Last</td>
+            <td th:text="${s.email}">email@example.com</td>
+            <td>
+                <a th:href="@{'/ui/students/' + ${s.id} + '/edit'}">Edit</a> |
+                <a th:href="@{'/ui/students/' + ${s.id} + '/delete'}" onclick="return confirm('Delete this student?');">Delete</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <script th:src="@{/js/list-utils.js}"></script>
+    <script th:src="@{/js/modal.js}"></script>
+    <script>
+        simpleSearchFilter('studentsTable','searchInput');
+        simplePagination('studentsTable', 10, 'pager');
+        // Override delete links to use modal
+        document.querySelectorAll('a[href*="/delete"]').forEach(function(a){
+            a.addEventListener('click', function(e){
+                e.preventDefault();
+                confirmDelete(a.href, 'Delete this student?');
+            });
+        });
+    </script>
+</div>
+</body>
+</html>

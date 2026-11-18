@@ -1,0 +1,25 @@
+# Example application properties (do NOT commit real secrets)
+
+# Basic app name
+spring.application.name=PlacementManagement
+
+# PostgreSQL datasource - use environment variables to avoid committing secrets
+spring.datasource.url=jdbc:postgresql://localhost:5432/placementdb
+spring.datasource.username=${DB_USERNAME:placement_user}
+spring.datasource.password=${DB_PASSWORD:change_me}
+spring.datasource.driverClassName=org.postgresql.Driver
+
+# JPA
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+spring.jpa.database-platform=org.hibernate.dialect.PostgreSQLDialect
+
+# Hikari pool settings
+spring.datasource.hikari.maximum-pool-size=10
+spring.datasource.hikari.minimum-idle=5
+spring.datasource.hikari.connection-timeout=20000
+
+# Notes:
+# - Replace the ${DB_USERNAME} and ${DB_PASSWORD} with environment variables in your runtime environment
+#   or configure a secrets manager in CI/production.
+# - For local quick checks you can use H2 (in-memory) and override properties at runtime.

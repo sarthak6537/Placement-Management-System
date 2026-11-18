@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Users</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+<div class="container">
+    <h1>Users</h1>
+    <a th:href="@{/ui}">Back</a> | <a th:href="@{/ui/users/new}">Add User</a>
+    <div>
+        <input id="searchInput" placeholder="Search..." />
+        <div id="pager" class="pager"></div>
+    </div>
+    <table id="usersTable">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="u : ${users}">
+            <td th:text="${u.id}">1</td>
+            <td th:text="${u.username}">user</td>
+            <td th:text="${u.email}">email@example.com</td>
+            <td>
+                <a th:href="@{'/ui/users/' + ${u.id} + '/edit'}">Edit</a> |
+                <a th:href="@{'/ui/users/' + ${u.id} + '/delete'}" onclick="return confirm('Delete this user?');">Delete</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <script th:src="@{/js/list-utils.js}"></script>
+    <script th:src="@{/js/modal.js}"></script>
+    <script>
+        simpleSearchFilter('usersTable','searchInput');
+        simplePagination('usersTable', 10, 'pager');
+        document.querySelectorAll('a[href*="/delete"]').forEach(function(a){
+            a.addEventListener('click', function(e){
+                e.preventDefault(); confirmDelete(a.href, 'Delete this user?');
+            });
+        });
+    </script>
+</div>
+</body>
+</html>
